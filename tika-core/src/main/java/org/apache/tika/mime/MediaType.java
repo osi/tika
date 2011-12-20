@@ -123,13 +123,21 @@ public final class MediaType implements Comparable<MediaType>, Serializable {
             String key = keyValue[0].trim();
             if (key.length() > 0) {
                 if (keyValue.length > 1) {
-                    parameters.put(key, keyValue[1].trim());
+                    parameters.put(key, unquote(keyValue[1].trim()));
                 } else {
                     parameters.put(key, "");
                 }
             }
         }
         return new MediaType(type, subtype, parameters);
+    }
+
+    private static String unquote(String s) {
+        if( s.startsWith("\"") && s.endsWith("\"")) {
+            return s.substring(1, s.length() - 1);
+        }
+
+        return s;
     }
 
     private final String type;
