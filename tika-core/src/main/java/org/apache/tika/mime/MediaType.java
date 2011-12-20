@@ -184,10 +184,18 @@ public final class MediaType implements Comparable<MediaType>, Serializable {
 
             key = key.trim();
             if (key.length() > 0) {
-                parameters.put(key, value.trim());
+                parameters.put(key, unquote(value.trim()));
             }
         }
         return parameters;
+    }
+    
+    private static String unquote(String s) {
+        if( s.startsWith("\"") && s.endsWith("\"")) {
+            return s.substring(1, s.length() - 1);
+        }
+
+        return s;
     }
 
     /**

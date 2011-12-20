@@ -20,6 +20,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.TestCase;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static java.util.Collections.singletonMap;
 
 public class MediaTypeTest extends TestCase {
 
@@ -129,6 +133,15 @@ public class MediaTypeTest extends TestCase {
             }
         }
         assertTrue(gotCharset && gotFoo && gotFoo2);
+    }
+
+    // Per http://tools.ietf.org/html/rfc2045#section-5.1 , charset can be in quotes
+    public void testParseWithParamsAndQuotedCharset() {
+        String mimeStringWithParams = "text/html;charset=\"UTF-8\"";
+
+        MediaType type = MediaType.parse(mimeStringWithParams);
+        assertNotNull(type);
+        assertEquals(singletonMap("charset", "UTF-8"), type.getParameters());
     }
 
     /**
